@@ -320,7 +320,16 @@ body[data-stage="grading"] main { width: min(100% - 32px, 520px); }
   position: fixed; inset: 0; display: grid; place-content: center; justify-items: center;
   padding: 16px; text-align: center; isolation: isolate; overflow: hidden;
   -webkit-user-select: none; user-select: none; -webkit-touch-callout: none;
-  --guide-duration: 4.6s;
+  --guide-duration: 3.6s;
+  --guide-pivot-duration: .48s;
+  --guide-walk-duration: calc(var(--guide-duration) - var(--guide-pivot-duration));
+  --guide-stride-duration: calc(var(--guide-walk-duration) / 4);
+  --guide-width: min(340px, 78vw, 66svh);
+  --guide-step-reach: calc(.085 * var(--guide-width));
+  /* Four strides, each with two steps that sweep from +reach to -reach. */
+  --guide-floor-travel: calc(-16 * var(--guide-step-reach));
+  --guide-wall-travel: calc(.7 * var(--guide-floor-travel));
+  --guide-poses: url('./assets/penguin-guide-centered.png');
 }
 .guide-track, body[data-stage="party"] {
   background: linear-gradient(#f6e7da 0 61%, #d4ab90 61% 62%, #e5c6ab 62% 64%, #d4ab90 64% 65%, #ead2bb 65%);
@@ -340,12 +349,86 @@ body[data-stage="grading"] main { width: min(100% - 32px, 520px); }
 }
 .guide-pair { position: relative; }
 .guide-penguin {
-  width: min(340px, 78vw, 66svh);
-  background-image: url('./assets/penguin-guide-walk-clean.png');
-  transform-origin: 29% 62%;
+  width: var(--guide-width);
+  background-image: var(--guide-poses);
+  background-size: 400% 400%;
+}
+.guide-gait {
+  position: absolute; inset: 0;
+  visibility: hidden; pointer-events: none; isolation: isolate;
+}
+.guide-upper-body {
+  position: absolute; inset: 0;
+  z-index: 2;
+  transform-origin: 16% 74%;
+}
+.guide-wing {
+  position: absolute;
+  top: 60%; left: 66.5%; width: 10.5%; height: 22.5%;
+  border: clamp(2px, calc(.015 * var(--guide-width)), 5px) solid #392614;
+  border-radius: 50% 58% 59% 47% / 29% 51% 59% 72%;
+  background: #a58a88;
+  transform-origin: 50% 12%;
+}
+.guide-torso {
+  position: absolute; inset: 0;
+  background: var(--guide-poses) 0 33.333333% / 400% 400% no-repeat;
+  /* Follow the overalls edge to mask the painted wing and feet. */
+  clip-path: polygon(0 0, 100% 0, 100% 65.3%, 77.8% 65.3%, 76.6% 67%, 76.7% 68.2%,
+    77.6% 70.8%, 78.3% 73.2%, 78.3% 75.7%, 78.1% 77.9%, 77.7% 79.5%, 77.5% 81.1%, 76.6% 84.4%,
+    74.5% 86.2%, 72.2% 87.4%, 70.3% 88.6%, 68.9% 89.2%, 67.2% 89.9%,
+    65.5% 90.5%, 63.4% 90.9%, 59% 91.4%, 52% 91.5%, 47% 91.1%,
+    43% 90%, 39.8% 88.4%, 0 88.4%);
+}
+.guide-gait::before, .guide-gait::after {
+  content: ''; position: absolute;
+  box-sizing: border-box;
+  top: 90.4%; left: 44.5%; width: 22%; height: 7.5%;
+  border: clamp(2px, calc(.013 * var(--guide-width)), 4.5px) solid #392614;
+  border-radius: 54% 66% 57% 45% / 63% 78% 52% 53%;
+  background: linear-gradient(#f7bd75, #e9a858);
+  transform-origin: 44% 75%;
+}
+.guide-gait::before {
+  top: 88.8%; left: 45%; width: 20.5%; height: 7.2%;
+  background: linear-gradient(#d3985e, #ba794e);
+}
+.guide-gait::after { z-index: 1; }
+#birthday-guide:is([data-phase="walking"], [data-phase="paused"]) .guide-penguin {
+  background-position: 0 33.333333%;
+}
+#birthday-guide[data-phase="release"] .guide-penguin {
+  background-position: 100% 100%;
+}
+@media (prefers-reduced-motion: no-preference) {
+  #birthday-guide:is([data-phase="walking"], [data-phase="paused"]) .guide-penguin {
+    animation: guide-turn-right var(--guide-pivot-duration) steps(1, end) both;
+  }
+  #birthday-guide:is([data-phase="walking"], [data-phase="paused"]) .guide-gait {
+    animation: guide-show-gait var(--guide-pivot-duration) steps(1, end) both;
+  }
+  #birthday-guide:is([data-phase="walking"], [data-phase="paused"]) .guide-upper-body {
+    animation: guide-shift-weight var(--guide-stride-duration) ease-in-out var(--guide-pivot-duration) infinite both;
+  }
+  #birthday-guide:is([data-phase="walking"], [data-phase="paused"]) .guide-wing {
+    animation: guide-swing-wing var(--guide-stride-duration) ease-in-out var(--guide-pivot-duration) infinite both;
+  }
+  #birthday-guide:is([data-phase="walking"], [data-phase="paused"]) .guide-gait::before,
+  #birthday-guide:is([data-phase="walking"], [data-phase="paused"]) .guide-gait::after {
+    animation: guide-step var(--guide-stride-duration) linear var(--guide-pivot-duration) infinite both;
+  }
+  #birthday-guide:is([data-phase="walking"], [data-phase="paused"]) .guide-gait::before {
+    animation-delay: calc(var(--guide-pivot-duration) - var(--guide-stride-duration) / 2);
+  }
+  #birthday-guide[data-phase="paused"] :is(.guide-penguin, .guide-gait, .guide-upper-body, .guide-wing),
+  #birthday-guide[data-phase="paused"] .guide-gait::before,
+  #birthday-guide[data-phase="paused"] .guide-gait::after {
+    animation-play-state: paused;
+  }
+  #birthday-guide[data-phase="release"] .guide-penguin { animation: guide-turn-back .28s steps(1, end); }
 }
 #take-hand {
-  position: absolute; top: 62%; right: 70%; transform: translateY(-50%);
+  position: absolute; top: 73%; left: calc(15% - 15px); transform: translate(-50%, -50%);
   width: 48px; height: 48px; padding: 0; border-radius: 50%;
   display: grid; place-items: center;
   z-index: 1; color: #804437; background: #fff5e3;
@@ -370,20 +453,21 @@ body[data-stage="grading"] main { width: min(100% - 32px, 520px); }
   box-shadow: 0 0 0 4px #aa68574d;
 }
 .guide-hint { margin: 8px 0 0; }
-#guide-line { max-width: 360px; text-wrap: balance; }
-#birthday-guide[data-phase="release"] .guide-hint { visibility: hidden; }
-#birthday-guide:is([data-phase="walking"], [data-phase="paused"]) .guide-track::after { animation: guide-pan var(--guide-duration) linear both; }
-#birthday-guide:is([data-phase="walking"], [data-phase="paused"]) .guide-track::before {
-  animation: guide-floor-pan var(--guide-duration) linear both;
+#birthday-guide #guide-line {
+  max-width: 360px; min-height: 2lh; text-wrap: balance;
+  display: grid; align-content: center;
 }
-#birthday-guide:is([data-phase="walking"], [data-phase="paused"]) .guide-penguin {
-  animation: guide-steps .84s steps(1, end) infinite, guide-weight .84s ease-in-out infinite;
+#birthday-guide[data-phase="release"] .guide-hint { visibility: hidden; }
+#birthday-guide:is([data-phase="walking"], [data-phase="paused"]) .guide-track::after {
+  animation: guide-pan var(--guide-walk-duration) linear var(--guide-pivot-duration) both;
+}
+#birthday-guide:is([data-phase="walking"], [data-phase="paused"]) .guide-track::before {
+  animation: guide-floor-pan var(--guide-walk-duration) linear var(--guide-pivot-duration) both;
 }
 #birthday-guide[data-phase="paused"] .guide-track::after,
-#birthday-guide[data-phase="paused"] .guide-track::before,
-#birthday-guide[data-phase="paused"] .guide-penguin { animation-play-state: paused; }
-#birthday-guide[data-phase="release"] .guide-track::after { background-position-x: -464px; }
-#birthday-guide[data-phase="release"] .guide-track::before { background-position-x: -640px, 0; }
+#birthday-guide[data-phase="paused"] .guide-track::before { animation-play-state: paused; }
+#birthday-guide[data-phase="release"] .guide-track::after { background-position-x: var(--guide-wall-travel); }
+#birthday-guide[data-phase="release"] .guide-track::before { background-position-x: var(--guide-floor-travel), 0; }
 #birthday-guide:is([data-phase="blackout"], [data-phase="arrived"]) {
   color: #fff2dc;
 }
@@ -463,10 +547,10 @@ body[data-stage="grading"] main { width: min(100% - 32px, 520px); }
   font-size: clamp(16px, 3.8vw, 22px); line-height: 1.65;
   font-weight: 500; overflow-wrap: anywhere; text-wrap: balance;
 }
-#birthday-party:not([hidden]) #party-title { animation: reveal-cake 1.6s ease-out; }
+#birthday-guide.message-only #birthday-party:not([hidden]) #party-title { animation: reveal-cake 1.6s ease-out; }
 #birthday-party:not([hidden]) #party-title.birthday-celebration {
   color: #ffdfaa;
-  animation: birthday-cheer 1.6s ease-out both, birthday-sway 2.4s 1.6s ease-in-out infinite;
+  animation: birthday-cheer 1.6s ease-out backwards, birthday-sway 2.4s 1.6s ease-in-out infinite;
 }
 @keyframes birthday-sway {
   0%, 100% { transform: rotate(-1deg); }
@@ -503,21 +587,38 @@ body[data-stage="grading"] main { width: min(100% - 32px, 520px); }
   font-size: clamp(48px, 14vmin, 84px); line-height: 1;
   font-variant-numeric: tabular-nums;
 }
-@keyframes guide-pan { to { background-position-x: -464px; } }
-@keyframes guide-floor-pan { to { background-position-x: -640px, 0; } }
-@keyframes guide-steps {
-  0% { background-position: 33.333333% 0; }
-  16.666667% { background-position: 66.666667% 0; }
-  33.333333% { background-position: 100% 0; }
-  50% { background-position: 0 100%; }
-  66.666667% { background-position: 33.333333% 100%; }
-  83.333333%, 100% { background-position: 66.666667% 100%; }
+@keyframes guide-pan { to { background-position-x: var(--guide-wall-travel); } }
+@keyframes guide-floor-pan { to { background-position-x: var(--guide-floor-travel), 0; } }
+@keyframes guide-turn-right {
+  from { background-image: var(--guide-poses); background-position: 0 0; }
+  28% { background-image: var(--guide-poses); background-position: 33.333333% 0; }
+  50% { background-position: 66.666667% 0; }
+  75% { background-position: 100% 0; }
+  to { visibility: hidden; }
 }
-@keyframes guide-weight {
-  12% { transform: rotate(1.5deg) scaleY(.99); }
-  38% { transform: rotate(-.75deg) scaleY(1.012); }
-  62% { transform: rotate(-1.5deg) scaleY(.99); }
-  88% { transform: rotate(.75deg) scaleY(1.012); }
+@keyframes guide-show-gait { to { visibility: visible; } }
+@keyframes guide-turn-back {
+  from { background-position: 0 100%; }
+  25% { background-position: 33.333333% 100%; }
+  50% { background-position: 66.666667% 100%; }
+  75%, to { background-position: 100% 100%; }
+}
+@keyframes guide-step {
+  0%, 100% { translate: var(--guide-step-reach) 0; }
+  50% { translate: calc(-1 * var(--guide-step-reach)) 0; animation-timing-function: ease-out; }
+  75% {
+    translate: calc(.55 * var(--guide-step-reach)) calc(-.032 * var(--guide-width));
+    rotate: -8deg;
+    animation-timing-function: ease-in;
+  }
+}
+@keyframes guide-shift-weight {
+  25% { rotate: 1.2deg; }
+  75% { rotate: -.8deg; }
+}
+@keyframes guide-swing-wing {
+  0%, 100% { rotate: -21deg; }
+  50% { rotate: -43deg; }
 }
 .birthday-cake { position: relative; flex: none; width: 12.8em; height: 14em; }
 .birthday-cake span { position: absolute; display: block; }

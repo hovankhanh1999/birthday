@@ -257,7 +257,8 @@ async function startBirthdayFinale() {
   guideLine.focus();
 }
 
-let guideTimeLeft = 4600;
+// Match --guide-duration so the walk ends as the floor finishes scrolling.
+let guideTimeLeft = 3600;
 let guideStartedAt;
 let guideTimer;
 let handInput;
@@ -313,6 +314,7 @@ function arriveAtCake() {
 }
 
 async function revealCake() {
+  await pause(420);
   guide.dataset.phase = 'blackout';
   await pause(1250);
   guide.dataset.phase = 'arrived';
@@ -333,7 +335,7 @@ const birthdayMessages = [
   'Chúc mừng sinh nhật chị Nhiiiiiiii',
   'Chúc chị Nhi của em sẽ có một tuổi 28 thật là rực rỡ nháaaa 💕💕💕🥳🥳🥳',
   'Em biết là mọi thứ không phải lúc nào cũng dễ dàng, nhưng chị vẫn đang làm rất tốt rùiiiii',
-  'Em tự hào về cô gái của em ❤️',
+  '❤️ Em tự hào về cô gái của em ❤️',
   'Và em cũng hi vọng cô gái ấy sẽ luôn thật hạnh phúc, và phải biết yêu thương chính mình nhó!',
   // 'Và em cũng hi vọng cô gái ấy sẽ không quên mình luôn xứng đáng được nhận tình yêu thương nháaa 💕️',
   'Thêm tuổi mới, nhớ dành thêm thời gian để nghỉ ngơi nữa hen',
@@ -345,14 +347,13 @@ let birthdayMessageIndex = 0;
 birthdayContinue.addEventListener('click', async () => {
   if (birthdayContinue.hidden) return;
   birthdayContinue.hidden = true;
-  partyTitle.classList.remove('birthday-celebration');
   birthdayContinue.textContent = '';
   birthdayContinue.setAttribute('aria-label', 'Chuyển lời nhắn tiếp theo');
   const hasMessage = birthdayMessageIndex < birthdayMessages.length;
   if (!hasMessage) partyTitle.classList.add('wish-transition');
   partyTitle.classList.add('fading');
   await pause(hasMessage ? 650 : 1100);
-  partyTitle.classList.remove('love-message');
+  partyTitle.classList.remove('birthday-celebration', 'love-message');
   birthdayEffects.hidden = true;
   if (!hasMessage) await pause(350);
   partyTitle.textContent = hasMessage ? birthdayMessages[birthdayMessageIndex] : 'Giờ mình nhắm mắt lại và ước nhá 😌';
@@ -363,13 +364,16 @@ birthdayContinue.addEventListener('click', async () => {
   if (hasMessage) partyTitle.classList.add('birthday-message');
   else partyTitle.classList.remove('birthday-message');
   partyTitle.classList.remove('fading');
+  partyTitle.focus();
   if (birthdayMessageIndex === 1 && hasMessage) {
     guide.classList.remove('message-only');
     cake.dataset.phase = 'lit';
     showBirthdayEffects('confetti');
     partyTitle.classList.add('birthday-celebration');
+    await pause(2200);
+    birthdayContinue.textContent = 'Chạm vào màn hình để tiếp tục';
+    birthdayContinue.removeAttribute('aria-label');
   }
-  partyTitle.focus();
   if (hasMessage) {
     birthdayMessageIndex += 1;
     birthdayContinue.hidden = false;

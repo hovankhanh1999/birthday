@@ -3,12 +3,13 @@ const assert = require('node:assert/strict');
 const fs = require('node:fs');
 const vm = require('node:vm');
 const source = fs.readFileSync(require('node:path').join(__dirname, '../script.js'), 'utf8');
-function setup(search = '') {
+function setup(search = '', hostname = 'fromkhanhwithlove.pages.dev') {
   const nodes = {}, timers = [], labels = [];
   function make() {
     const classes = new Set();
     return { hidden: true, disabled: false, value: '', textContent: '', dataset: {}, children: [], attributes: {},
-      classList: { add(...names) { names.forEach(n => classes.add(n)); }, remove(...names) { names.forEach(n => classes.delete(n)); } },
+      classList: { add(...names) { names.forEach(n => classes.add(n)); }, remove(...names) { names.forEach(n => classes.delete(n)); },
+        contains(name) { return classes.has(name); } },
       setAttribute(k,v) { this.attributes[k] = v; }, removeAttribute(k) { delete this.attributes[k]; },
       focus() {}, scrollIntoView() {}, before() {}, after() {},
       addEventListener(t, fn) { this[t] = fn; }, replaceChildren() { this.children=[]; }, append(n) { this.children.push(n); },
@@ -22,7 +23,7 @@ function setup(search = '') {
     querySelectorAll(selector) { return selector === '[data-paper]' ? papers : []; } };
  const clock = {now: 0};
  const context = vm.createContext({
-   document, location: {search}, URLSearchParams, performance: {now: () => clock.now},
+   document, location: {search, hostname}, URLSearchParams, performance: {now: () => clock.now},
    setTimeout(fn, ms) { const timer = {fn, ms}; timers.push(timer); return timer; },
    clearTimeout(timer) { const index = timers.indexOf(timer); if (index >= 0) timers.splice(index, 1); }
  });
@@ -31,13 +32,23 @@ function setup(search = '') {
 }
 const submit = {preventDefault(){}};
 
-test('old preview links start at the beginning', () => {
+test('public preview links start at the beginning', () => {
  for (const preview of ['guide', 'bedtime', 'farewell']) {
   const {node,timers} = setup('?preview=' + preview);
   assert.deepEqual(timers.map(timer => timer.ms), [3000, 7000]);
   assert.equal(node('#birthday-guide').hidden, true);
   assert.equal(node('#bedtime').hidden, true);
   assert.equal(node('#birthday-farewell').hidden, true);
+ }
+});
+test('former local guide preview URL follows the normal entry flow', () => {
+ for (const host of ['localhost', '127.0.0.1']) {
+  const {node,timers,document} = setup('?preview=guide', host);
+  assert.deepEqual(timers.map(timer => timer.ms), [3000, 7000]);
+  assert.equal(node('#birthday-guide').hidden, true);
+  timers[1].fn();
+  assert.equal(document.body.dataset.stage, 'password');
+  assert.equal(node('#password-entry').hidden, false);
  }
 });
 test('loading leads to password entry and wrong password and unlock are guarded', async () => {
@@ -184,12 +195,14 @@ test('finale walks only while the hand is held, then counts down and reveals the
  assert.equal(node('#birthday-party').hidden,true);
  hand.keydown({key: ' ', preventDefault() {}});
  assert.equal(node('#birthday-guide').dataset.phase,'walking');
- await advance(3200);
+ await advance(2200);
  assert.equal(node('#birthday-guide').dataset.phase,'release');
  assert.equal(node('#guide-line').textContent,'Gòi gòi, giờ buông tay ra nhe');
  assert.equal(node('#birthday-party').hidden,true);
  assert.equal(timers.length,0);
  hand.keyup({key: ' ', preventDefault() {}});
+ assert.equal(node('#birthday-guide').dataset.phase,'release');
+ await advance(420);
  assert.equal(node('#birthday-guide').dataset.phase,'blackout');
  await advance(1250);
  assert.notEqual(node('#cake').dataset.phase,'lit');
@@ -201,12 +214,29 @@ test('finale walks only while the hand is held, then counts down and reveals the
  await advance(1600);
  assert.equal(node('#birthday-continue').hidden,false);
  assert.equal(timers.length,0);
- for (const message of vm.runInContext('birthdayMessages.slice(1)', context)) {
+ node('#birthday-continue').click();
+ await advance(650);
+ assert.equal(node('#party-title').textContent,vm.runInContext('birthdayMessages[1]',context));
+ assert.equal(node('#cake').dataset.phase,'lit');
+ assert.equal(node('#birthday-continue').hidden,true);
+ node('#birthday-continue').click();
+ assert.equal(timers.length,1);
+ await advance(2200);
+ assert.equal(node('#birthday-continue').hidden,false);
+ assert.equal(node('#birthday-continue').textContent,'Chạm vào màn hình để tiếp tục');
+ const partyTitle = node('#party-title');
+ for (const message of vm.runInContext('birthdayMessages.slice(2)', context)) {
+  const leavingCelebration = partyTitle.classList.contains('birthday-celebration');
   node('#birthday-continue').click();
+  assert.equal(partyTitle.classList.contains('fading'),true);
+  assert.equal(partyTitle.classList.contains('birthday-celebration'),leavingCelebration);
   await advance(650);
-  assert.equal(node('#party-title').textContent,message);
+  assert.equal(partyTitle.classList.contains('birthday-celebration'),false);
+  assert.equal(partyTitle.classList.contains('fading'),false);
+  assert.equal(partyTitle.textContent,message);
   assert.equal(node('#cake').dataset.phase,'lit');
   assert.equal(node('#birthday-continue').hidden,false);
+  assert.equal(node('#birthday-continue').textContent,'');
   assert.equal(node('#wish-done').hidden,true);
  }
  node('#birthday-continue').click();

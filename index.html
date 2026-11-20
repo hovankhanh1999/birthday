@@ -7,8 +7,8 @@
     <title>Oupsss !!!</title>
     <link rel="preload" as="image" href="./assets/penguin-wave-connected.png">
     <link rel="icon" href="./assets/heart-icon.svg" type="image/svg+xml">
-    <link rel="stylesheet" href="./styles.css?v=deploy-time">
-    <link rel="preload" as="image" href="./assets/penguin-guide-walk-clean.png" fetchpriority="low">
+    <link rel="stylesheet" href="./styles.css?v=birthday-message-fade">
+    <link rel="preload" as="image" href="./assets/penguin-guide-centered.png" fetchpriority="low">
     <link rel="preload" as="image" href="./assets/penguin-pocket-clean.png">
     <link rel="preload" as="image" href="./assets/penguin-approved-climb-transparent.png">
     <link rel="stylesheet" href="./climb-preview.css?v=2">
@@ -16,7 +16,7 @@
     <link rel="stylesheet" href="./farewell.css?v=single-heart-lift">
     <link rel="preload" as="image" href="./assets/penguin-farewell-front-v5.png">
     <link rel="preload" as="image" href="./assets/penguin-farewell-continuous-v4.png">
-    <script src="./script.js?v=full-birthday-flow" defer></script>
+    <script src="./script.js?v=birthday-finale" defer></script>
   </head>
   <body data-stage="loading">
     <small id="deploy-time" hidden>Deploy <time></time></small>
@@ -81,10 +81,16 @@
       </section>
       <section id="birthday-guide" aria-labelledby="guide-line" data-phase="ready" hidden>
         <div id="birthday-effects" aria-hidden="true" hidden></div>
-        <p id="guide-line" class="finale-line" role="status" tabindex="-1">Đưa tay đây, em dẫn chị đến chỗ nàyyy</p>
+        <p id="guide-line" class="finale-line" role="status" tabindex="-1">Cho em mượn tay trái, em dẫn chị đến chỗ nàyyy</p>
         <div class="guide-track" aria-hidden="true"></div>
         <div class="guide-pair">
           <div class="finale-penguin guide-penguin" aria-hidden="true"></div>
+          <div class="guide-gait" aria-hidden="true">
+            <div class="guide-upper-body">
+              <span class="guide-wing"></span>
+              <span class="guide-torso"></span>
+            </div>
+          </div>
           <button id="take-hand" type="button" aria-label="Nhấn và giữ dấu vân tay">
             <svg aria-hidden="true" width="30" height="30" viewBox="0 0 32 32" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round">
               <path d="M5 15a11 11 0 0 1 22 0c0 3 .2 6 1 9M5 19c0 3-.5 5-1 6"/>
@@ -104,7 +110,7 @@
         <p class="guide-hint">Nhấn giữ dấu vân tay nha</p>
         <section id="birthday-party" aria-labelledby="party-title" hidden>
           <h1 id="party-title" tabindex="-1" aria-live="polite">Chúc mừng sinh nhật chị Nhiiiii</h1>
-          <button id="birthday-continue" type="button" hidden>Chạm màn hình để tiếp tục</button>
+          <button id="birthday-continue" type="button" hidden>Chạm vào màn hình để tiếp tục</button>
           <div class="party-actions">
             <p id="candle-message" class="finale-line" role="status"></p>
             <button id="wish-done" type="button" hidden>Xong rùiii</button>
