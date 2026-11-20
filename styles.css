@@ -1,6 +1,11 @@
 :root { color-scheme: light; font-family: "Segoe UI", system-ui, sans-serif; color: #63493f; background: #fff8ed; font-synthesis: none; }
 * { box-sizing: border-box; }
 [hidden] { display: none !important; }
+#deploy-time { display: none; }
+body:is([data-stage="loading"], [data-stage="password"]) #deploy-time {
+  display: block; position: fixed; inset-inline: 12px; bottom: max(12px, env(safe-area-inset-bottom));
+  color: #67574e; font-size: 11px; text-align: center; pointer-events: none;
+}
 body { margin: 0; min-height: 100svh; display: grid; place-items: center; background-image: radial-gradient(#e9d9c6 1px, transparent 1px); background-size: 22px 22px; }
 main { width: min(100% - 32px, 460px); padding: 32px 0; }
 button { border: 1.5px solid #a16b60; border-radius: 11px; background: #edb7ac; color: #533c35; width: 100%; padding: 13px 20px; font: inherit; font-size: 14px; font-weight: 650; line-height: 1.6; cursor: pointer; box-shadow: 0 3px 0 #a16b60; transition: background .15s; }

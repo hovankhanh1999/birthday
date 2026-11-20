@@ -22,11 +22,7 @@ jobs:
       - name: Test site
         run: node --test tests/*.test.cjs
       - name: Prepare site files
-        run: |
-          files=(index.html script.js styles.css climb-preview.css pocket-preview.css farewell.css)
-          mkdir -p dist/assets
-          cp "${files[@]}" dist/
-          grep -hoE 'assets/[[:alnum:]_.-]+' "${files[@]}" | sort -u | xargs -r cp -t dist/assets --
+        run: node prepare-deploy.cjs dist
       - name: Publish production site
         env:
           CLOUDFLARE_ACCOUNT_ID: 85b62820180ea3217f12c314b89cab34
