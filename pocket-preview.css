@@ -1,0 +1,24 @@
+.pocket-preview { max-width: 380px; text-align: center; }
+.pocket-stage { position: relative; height: 330px; }
+.pocket-actor { width: 240px; height: 240px; position: absolute; top: 80px; left: 50%; transform: translateX(-50%); }
+.pocket-actor > div { position: absolute; inset: 0; }
+.pocket-frames { background: url('./assets/penguin-pocket-still-searching.png') 0 0 / 400% 200% no-repeat; opacity: 0; }
+.pocket-bubble { position: absolute; top: 0; left: 50%; z-index: 2; width: min(280px, calc(100% - 8px)); transform: translateX(-50%); border: 1.5px solid #ccb4a1; border-radius: 17px; background: #fffcf5; padding: 12px; margin: 0; text-align: center; font-size: 14px; line-height: 1.7; }
+.pocket-bubble::after { content: ''; position: absolute; top: 100%; left: calc(50% - 8px); border: 8px solid transparent; border-top-color: #ccb4a1; }
+[data-phase="rummaging"] .penguin-sprite, [data-phase="huh"] .penguin-sprite, [data-phase="looking"] .penguin-sprite, [data-phase="done"] .penguin-sprite { opacity: 0; }
+[data-phase="rummaging"] .pocket-frames, [data-phase="huh"] .pocket-frames, [data-phase="looking"] .pocket-frames, [data-phase="done"] .pocket-frames { opacity: 1; }
+[data-phase="rummaging"] .pocket-frames { animation: pocket-rummage .7s steps(1,end) 6; }
+[data-phase="huh"] .pocket-frames { background-position: 0 100%; }
+[data-phase="looking"] .pocket-frames, [data-phase="done"] .pocket-frames { animation: pocket-looking 2.4s steps(1,end) infinite; }
+#preview-sos { margin: 4px 0 18px; }
+#preview-sos:disabled { opacity: 1; }
+#replay-pocket { background: #f5e8d7; box-shadow: none; }
+.preview-link { font-size: 12px; margin: 20px 0 0; }
+.preview-link a { color: #896b5e; }
+@keyframes pocket-rummage { 0%,100% { background-position: 0 0; } 25% { background-position: 33.333333% 0; } 50% { background-position: 66.666667% 0; } 75% { background-position: 100% 0; } }
+@keyframes pocket-looking { 0% { background-position: 0 100%; } 20% { background-position: 33.333333% 100%; } 50% { background-position: 66.666667% 100%; } 80%,100% { background-position: 100% 100%; } }
+@media (max-width:360px) { .pocket-actor { width: 220px; height: 220px; } .pocket-stage { height: 310px; } }
+@media (prefers-reduced-motion:reduce) { .pocket-frames { animation: none !important; } [data-phase="looking"] .pocket-frames, [data-phase="done"] .pocket-frames { background-position: 100% 100%; } }
+
+.sos-slot { height: 74px; }
+

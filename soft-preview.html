@@ -1,0 +1,48 @@
+<!doctype html>
+<html lang="vi">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Cánh cụt · hình duyệt và chuyển động</title>
+<style>
+:root {font-family: 'Segoe UI',system-ui,sans-serif; color:#665247; background:#fff7eb; color-scheme:light;}
+*{box-sizing:border-box} body{margin:0;min-height:100svh;display:grid;place-items:center}
+main{width:min(100% - 24px,420px);text-align:center;padding:24px 0}
+h1{font-size:20px;font-weight:600;margin:0 0 18px}
+input{position:absolute;width:1px;height:1px;opacity:0}
+nav{display:flex;justify-content:center;gap:8px;margin-bottom:12px}
+label{padding:10px 16px;border:1px solid #d5bca7;border-radius:24px;font-size:13px;cursor:pointer}
+#original:checked ~ nav label[for=original],#motion:checked ~ nav label[for=motion]{background:#f6d0ba;border-color:#b98a70}
+input:focus-visible ~ nav label{outline:2px solid #9c735c;outline-offset:3px}
+.art{position:relative;width:100%;aspect-ratio:1;overflow:hidden;border-radius:24px}
+.reference{width:100%;height:100%;object-fit:contain;background:#fff7eb}
+.animated{position:absolute;inset:0;background:url('./assets/penguin-approved-search-transparent.png') 0 0/400% 300% no-repeat;animation:search 10s steps(1,end) infinite}
+#original:checked ~ .art .animated{visibility:hidden;animation-play-state:paused}
+#motion:checked ~ .art .reference{visibility:hidden}
+p{font-size:13px;color:#927d6c;line-height:1.7;margin:16px 0 0}
+a{color:inherit;text-underline-offset:4px}
+@keyframes search {
+0%,8%{background-position:0 0}
+12%{background-position:33.333333% 0}
+18%{background-position:66.666667% 0}
+24%{background-position:100% 0}
+30%{background-position:0 50%}
+39%{background-position:33.333333% 50%}
+47%{background-position:66.666667% 50%}
+55%{background-position:100% 50%}
+63%{background-position:0 100%}
+70%{background-position:33.333333% 100%}
+77%{background-position:66.666667% 100%}
+84%,96%{background-position:100% 100%}
+100%{background-position:0 0}
+}
+@media(prefers-reduced-motion:reduce){.animated{animation:none;background-position:100% 100%}}
+</style>
+</head>
+<body><main>
+<h1>Cùng một bé, thử cử động tay</h1>
+<input id="original" name="view" type="radio"><input id="motion" name="view" type="radio" checked>
+<nav aria-label="So sánh mẫu"><label for="original">Hình đã duyệt</label><label for="motion">Chuyển động thử</label></nav>
+<div class="art"><img class="reference" src="./assets/penguin-approved.png" alt="Hình cánh cụt mặc yếm đào đã duyệt"><div class="animated" role="img" aria-label="Bé cánh cụt đưa tay vào túi rồi rút ba phiếu"></div></div>
+<p>Cúi nhìn vào túi → lục tìm một chút → rút phiếu.<br>Chọn “Hình đã duyệt” để so nét và tỉ lệ.</p>
+<p><a href="./">Về trang sinh nhật</a></p>
+</main></body></html>

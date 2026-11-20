@@ -1,0 +1,235 @@
+body[data-stage="farewell"],
+#birthday-farewell:not([hidden]) {
+  background: #fff8ed;
+}
+
+#birthday-farewell:not([hidden]) {
+  --peek-size: min(208px, 61vw, 46svh);
+  --stage-bottom: 19svh;
+  --stage-height: calc(var(--peek-size) * .64);
+  position: fixed;
+  inset: 0;
+  overflow: hidden;
+}
+
+#birthday-farewell .finale-line {
+  position: absolute;
+  bottom: calc(var(--stage-bottom) + var(--stage-height) + clamp(28px, 6svh, 52px));
+  left: 50%;
+  width: min(88%, 30ch);
+  margin: 0;
+  transform: translateX(-50%);
+  text-align: center;
+  font-size: clamp(18px, 4.6vw, 25px);
+  line-height: 1.6;
+  text-wrap: balance;
+}
+
+#farewell-line:focus { outline: none; }
+
+.farewell-stage {
+  --press-distance: 4%;
+  --press-time: .56s;
+  --press-ease: cubic-bezier(.25,.7,.25,1);
+  position: absolute;
+  bottom: var(--stage-bottom);
+  left: 50%;
+  width: var(--peek-size);
+  height: var(--stage-height);
+  transform: translateX(-56%);
+}
+
+.farewell-peek-window {
+  position: absolute;
+  inset: calc(var(--peek-size) * -.09) 0 0;
+  padding-top: calc(var(--peek-size) * .09);
+  overflow: hidden;
+}
+
+
+.farewell-penguin {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 1;
+  transform: translateY(3%);
+  transition: transform var(--press-time) var(--press-ease);
+}
+
+
+.farewell-character {
+  position: absolute;
+  inset: 0;
+}
+
+.farewell-character::after,
+.farewell-press-frame,
+.farewell-eyes {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: url('./assets/penguin-farewell-front-v5.png') 100% 100% / 400% 300% no-repeat;
+  opacity: 0;
+}
+
+#birthday-farewell:is([data-phase="last-peek"],[data-phase="last-hide"]) .farewell-character::after {
+  background-position: 66.666667% 100%;
+  transform: translate(-.8%, -1.2%);
+}
+
+.farewell-character::after { background-position: 100% 0; }
+
+.farewell-press-frame {
+  background-image: url('./assets/penguin-farewell-continuous-v4.png');
+  background-position: 100% 100%;
+  transform-origin: 50% 60%;
+}
+
+#birthday-farewell:is([data-phase="reach"],[data-phase="place"]) .farewell-press-frame {
+  animation: press-lift-poses .18s step-end both;
+}
+
+#birthday-farewell:is([data-phase="reach"],[data-phase="place"],[data-phase="release"]) .farewell-press-frame,
+#birthday-farewell[data-phase]:not([data-phase="reach"],[data-phase="place"],[data-phase="release"]) .farewell-character::after {
+  opacity: 1;
+}
+
+.farewell-eyes {
+  transition: opacity .13s ease-in-out;
+  z-index: 1;
+  background-position: 66.666667% 100%;
+  mask-image:
+    radial-gradient(ellipse 6.3% 6% at 41% 39.7%, #000 78%, transparent),
+    radial-gradient(ellipse 6.3% 6% at 62.5% 39.7%, #000 78%, transparent);
+}
+
+#birthday-farewell[data-phase="speak"] .farewell-eyes {
+  opacity: 1;
+  transition-delay: .18s;
+}
+
+#birthday-farewell:is([data-phase="reach"],[data-phase="place"],[data-phase="release"]) .farewell-eyes {
+  visibility: hidden;
+}
+
+#birthday-farewell:is([data-phase="wait"],[data-phase="speak"]) .farewell-penguin {
+  animation: peek-up .42s cubic-bezier(.18,.74,.3,1) both;
+}
+
+#birthday-farewell:is([data-phase="wait"],[data-phase="speak"]) .farewell-character {
+  animation: wave-weight .62s .4s ease-in-out 2;
+  transform-origin: 50% 62%;
+}
+
+#birthday-farewell:is([data-phase="wait"],[data-phase="speak"]) .farewell-character::after {
+  background-position: 100% 0;
+  animation: wave-pose .62s .4s steps(1, end) 2;
+}
+
+#birthday-farewell[data-phase="place"] .farewell-penguin {
+  transform: translate(var(--press-distance), 3%);
+}
+
+.sticker-carrier {
+  position: absolute;
+  inset: calc(var(--peek-size) * .03) 0 auto;
+  height: var(--peek-size);
+  transform: translateX(0);
+  opacity: 0;
+  transition: transform var(--press-time) var(--press-ease), opacity .14s ease-out;
+}
+
+.sticker-delivery {
+  position: absolute;
+  top: 52%;
+  left: 79%;
+  width: min(57px, 16.75vw, 12.5svh);
+  transform: translate(-5%,-67%);
+}
+
+.heart-sticker { display: block; width: 100%; }
+.big-heart { fill: #d75e65; stroke: #b24e54; stroke-width: 2; }
+
+#birthday-farewell[data-phase]:not([data-phase="wait"],[data-phase="speak"],[data-phase="reach"]) .sticker-carrier {
+  opacity: 1;
+  transform: translateX(var(--press-distance));
+}
+
+#birthday-farewell[data-phase="release"] .farewell-penguin {
+  transform: translate(var(--press-distance),3%);
+}
+
+#birthday-farewell:is([data-phase="done"],[data-phase="goodbye"]) .farewell-penguin {
+  transform: translate(var(--press-distance),-5%);
+}
+
+#birthday-farewell[data-phase="done"] .farewell-penguin {
+  animation: celebrate .44s ease-in-out both;
+}
+
+#birthday-farewell:is([data-phase="done"],[data-phase="goodbye"],[data-phase="duck"]) .farewell-character::after {
+  background-position: 66.666667% 0;
+}
+
+#birthday-farewell[data-phase="done"] .farewell-character::after {
+  animation: celebrate-arms .44s steps(1,end) both;
+}
+
+#birthday-farewell[data-phase="goodbye"] .farewell-character::after {
+  animation: farewell-wave .64s steps(1,end);
+}
+
+#birthday-farewell:is([data-phase="duck"],[data-phase="last-hide"]) .farewell-penguin {
+  transform: translate(var(--press-distance),74%);
+  transition: transform .44s cubic-bezier(.45,0,.8,.38);
+}
+
+#birthday-farewell[data-phase="last-peek"] .farewell-penguin {
+  transform: translate(var(--press-distance),6%);
+  transition: transform .3s cubic-bezier(.16,.74,.33,1);
+}
+
+#birthday-farewell[data-phase="place"] .heart-sticker {
+  animation: heart-contact .22s var(--press-time) ease-out;
+  transform-origin: 25% 85%;
+}
+
+@keyframes peek-up {
+  from { transform: translateY(70%); }
+  to { transform: translateY(3%); }
+}
+
+@keyframes wave-pose {
+  24%, 67% { background-position: 66.666667% 0; }
+  0%, 68%, 100% { background-position: 100% 0; }
+}
+
+@keyframes wave-weight {
+  38% { transform: translateY(-1.5%) rotate(-3deg); }
+  75% { transform: rotate(1deg); }
+}
+
+@keyframes celebrate {
+  from { transform: translate(var(--press-distance),3%); }
+  25% { transform: translate(var(--press-distance),3%); }
+  65% { transform: translate(var(--press-distance),-8%); }
+  to { transform: translate(var(--press-distance),-5%); }
+}
+
+@keyframes celebrate-arms {
+  from { background-position: 100% 0; }
+  36%, to { background-position: 66.666667% 0; }
+}
+
+@keyframes farewell-wave {
+  0%, 45%, 100% { background-position: 66.666667% 0; }
+  18%, 70% { background-position: 100% 0; }
+}
+
+@keyframes heart-contact {
+  48% { transform: scale(.97, .91); }
+}
+
+@keyframes press-lift-poses {
+  from { background-position: 66.666667% 100%; }
+  to { background-position: 100% 100%; }
+}

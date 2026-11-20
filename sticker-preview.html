@@ -1,0 +1,131 @@
+<!doctype html>
+<html lang="vi">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#faf5eb">
+  <title>Bé cánh cụt · mẫu nét phẳng</title>
+  <style>
+    :root { color-scheme: light; font-family: 'Segoe UI', system-ui, sans-serif; color: #45483f; background: #faf5eb; }
+    * { box-sizing: border-box; }
+    body { margin: 0; min-height: 100svh; display: grid; place-items: center; }
+    main { width: min(100% - 32px, 420px); padding: 32px 0; text-align: center; }
+    .label { margin: 0 0 14px; font-size: 11px; letter-spacing: .18em; color: #908a7a; }
+    h1 { font-size: 22px; font-weight: 600; margin: 0; }
+    .stage { position: relative; margin: 22px auto 8px; }
+    svg { display: block; width: 100%; height: auto; overflow: visible; }
+    .bubble { position: absolute; top: 0; left: 50%; transform: translateX(-50%); margin: 0; padding: 12px 22px; background: #fffdf7; border: 1.5px solid #d8cdbb; border-radius: 19px; font-size: 17px; white-space: nowrap; opacity: 0; }
+    .bubble::after { content: ''; position: absolute; bottom: -6px; left: 50%; width: 10px; height: 10px; background: inherit; border-right: 1.5px solid #d8cdbb; border-bottom: 1.5px solid #d8cdbb; transform: rotate(45deg); }
+    .huh { animation: huh 14s linear infinite; }
+    .where { animation: where 14s linear infinite; }
+    .found { animation: found 14s linear infinite; }
+    .caption { min-height: 36px; margin: 0; font-size: 13px; line-height: 1.7; color: #8e8879; }
+    a { display: inline-block; margin-top: 12px; padding: 8px; color: #736c5f; font-size: 13px; text-underline-offset: 4px; }
+    .body { transform-origin: 180px 360px; animation: breathe 14s ease-in-out infinite; }
+    .head { transform-origin: 180px 225px; animation: head 14s ease-in-out infinite; }
+    .eyes { transform-origin: 180px 163px; animation: blink 7s linear infinite; }
+    .pupils { animation: gaze 14s ease-in-out infinite; }
+    .brows { opacity: 0; animation: brows 14s ease-in-out infinite; }
+    .left-arm { transform-origin: 110px 230px; animation: reach 14s ease-in-out infinite; }
+    .right-arm { transform-origin: 248px 230px; animation: steady 14s ease-in-out infinite; }
+    .slips { animation: slips 14s ease-in-out infinite; }
+    .slip-left { transform-origin: 142px 286px; animation: fan-left 14s ease-in-out infinite; }
+    .slip-right { transform-origin: 142px 286px; animation: fan-right 14s ease-in-out infinite; }
+    .shadow { transform-origin: center; animation: shadow 14s ease-in-out infinite; }
+    @keyframes breathe { 0%,28%,54%,100% { transform: scale(1); } 14%,42% { transform: scale(1.012,.988); } 62% { transform: scale(.99,1.01); } 74%,92% { transform: scale(1); } }
+    @keyframes head { 0%,5% { transform: rotate(0); } 12%,27% { transform: translateY(3px) rotate(5deg); } 33%,39% { transform: rotate(-7deg); } 44%,49% { transform: rotate(7deg); } 54%,60% { transform: translateY(4px) rotate(4deg); } 72%,92% { transform: rotate(-2deg); } 100% { transform: rotate(0); } }
+    @keyframes reach {
+      0%,5%,100% { transform: rotate(-8deg); }
+      11%,23% { transform: rotate(5deg) translateY(3px); }
+      17%,28% { transform: rotate(-6deg) translateY(1px); }
+      33%,43% { transform: rotate(2deg) translateY(4px); }
+      38%,49% { transform: rotate(-5deg) translateY(2px); }
+      56% { transform: rotate(7deg) translateY(5px); }
+      62% { transform: rotate(1deg); }
+      74%,92% { transform: rotate(-26deg) translateY(-3px); }
+    }
+    @keyframes steady { 0%,100% { transform: rotate(0); } 14%,28%,43%,55% { transform: rotate(4deg); } 21%,36%,49% { transform: rotate(-2deg); } 74%,92% { transform: rotate(12deg); } }
+    @keyframes slips { 0%,55%,100% { opacity: 0; transform: translateY(24px); } 59% { opacity: 1; transform: translateY(19px); } 72%,92% { opacity: 1; transform: translateY(0); } 97% { opacity: 0; transform: translateY(15px); } }
+    @keyframes fan-left { 0%,70%,100% { transform: rotate(0); } 81%,92% { transform: rotate(-20deg); } }
+    @keyframes fan-right { 0%,70%,100% { transform: rotate(0); } 81%,92% { transform: rotate(20deg); } }
+    @keyframes blink { 0%,27%,30%,72%,75%,100% { transform: scaleY(1); } 28.5%,73.5% { transform: scaleY(.1); } }
+    @keyframes gaze { 0%,6%,74%,100% { transform: translate(0,0); } 12%,28%,54%,61% { transform: translate(1px,3px); } 35%,40% { transform: translate(-3px,0); } 46%,50% { transform: translate(3px,0); } }
+    @keyframes brows { 0%,28%,72%,100% { opacity: 0; } 32%,60% { opacity: 1; } }
+    @keyframes shadow { 0%,100% { transform: scaleX(1); } 56% { transform: scaleX(.96); } 74%,92% { transform: scaleX(1.03); } }
+    @keyframes huh { 0%,27%,40%,100% { opacity: 0; } 30%,37% { opacity: 1; } }
+    @keyframes where { 0%,40%,61%,100% { opacity: 0; } 43%,57% { opacity: 1; } }
+    @keyframes found { 0%,77%,97%,100% { opacity: 0; } 80%,93% { opacity: 1; } }
+    @media (prefers-reduced-motion: reduce) {
+      *, *::before, *::after { animation: none !important; }
+      .slips { opacity: 1; }
+      .left-arm { transform: rotate(-26deg); }
+      .slip-left { transform: rotate(-20deg); }
+      .slip-right { transform: rotate(20deg); }
+      .found { opacity: 1; }
+    }
+  </style>
+</head>
+<body>
+  <main>
+    <p class="label">MẪU NÉT VẼ & CHUYỂN ĐỘNG</p>
+    <h1>Một bé cánh cụt, nét đơn giản hơn</h1>
+    <div class="stage">
+      <p class="bubble huh" aria-hidden="true">Ủa..</p>
+      <p class="bubble where" aria-hidden="true">ủa đâu rồi....</p>
+      <p class="bubble found" aria-hidden="true">À, đây rồi!</p>
+      <svg viewBox="0 0 360 410" role="img" aria-labelledby="penguin-title penguin-description">
+        <title id="penguin-title">Cánh cụt mặc yếm đào lục túi rồi rút ba phiếu</title>
+        <desc id="penguin-description">Bé cúi đầu tìm trong túi, nhìn trái phải bối rối rồi tìm thấy ba phiếu. Đoạn mẫu tự lặp lại.</desc>
+        <ellipse class="shadow" cx="180" cy="370" rx="76" ry="9" fill="#e8e2d6" />
+        <g stroke="#35434a" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round">
+          <g class="body">
+            <path d="M123 343 Q102 344 102 359 Q116 369 148 359 L151 344" fill="#e7ae66" />
+            <path d="M212 344 L211 359 Q244 370 260 358 Q258 345 236 343" fill="#e7ae66" />
+            <path d="M111 215 Q89 245 99 305 Q102 351 177 353 Q250 356 263 308 Q273 257 248 216Z" fill="#495b62" />
+            <path d="M119 221 Q180 204 240 223 L245 310 Q233 340 180 342 Q124 340 114 309Z" fill="#fff9e9" stroke="none" />
+            <path d="M119 226 L134 224 L145 266 L130 273Z M224 224 L239 228 L230 273 L215 266Z" fill="#e9aa94" />
+            <path d="M119 262 Q177 277 241 261 L248 311 Q243 345 181 346 Q119 345 111 313Z" fill="#e9aa94" />
+            <path d="M118 295 Q179 308 242 293" fill="none" stroke="#c78d7a" stroke-width="2" />
+            <circle cx="136" cy="271" r="5" fill="#ffe4b3" stroke-width="2.5" />
+            <circle cx="224" cy="271" r="5" fill="#ffe4b3" stroke-width="2.5" />
+            <g class="head">
+              <path d="M91 185 C71 151 80 101 114 76 Q136 57 161 56 Q151 39 163 41 Q176 42 183 54 Q197 40 203 48 Q208 54 203 60 C250 66 282 103 279 152 Q283 205 244 224 Q185 251 125 226 Q100 216 91 185Z" fill="#495b62" />
+              <path d="M97 166 Q95 118 126 109 Q153 103 179 138 Q201 105 231 111 Q267 119 266 169 Q265 212 224 225 Q180 242 133 225 Q100 214 97 166Z" fill="#fff9e9" stroke="none" />
+              <g class="pupils">
+                <g class="eyes" fill="#35434a" stroke="none">
+                  <ellipse cx="142" cy="166" rx="6" ry="8" />
+                  <ellipse cx="218" cy="166" rx="6" ry="8" />
+                </g>
+              </g>
+              <g class="brows" fill="none" stroke-width="3">
+                <path d="M132 148 Q144 150 150 142" />
+                <path d="M209 142 Q216 151 227 149" />
+              </g>
+              <ellipse cx="121" cy="187" rx="11" ry="5.5" fill="#edb2a1" stroke="none" />
+              <ellipse cx="240" cy="187" rx="11" ry="5.5" fill="#edb2a1" stroke="none" />
+              <path d="M166 181 Q180 169 194 181 Q184 195 177 191Z" fill="#e7ae66" stroke-width="2.5" />
+            </g>
+            <g class="right-arm">
+              <path d="M247 230 C270 240 270 275 246 286 Q225 291 216 277 Q218 264 238 250" fill="#495b62" />
+            </g>
+            <g class="left-arm">
+              <g class="slips" fill="#fff1ce" stroke-width="2.5">
+                <rect class="slip-left" x="128" y="230" width="29" height="56" rx="3" />
+                <rect class="slip-right" x="128" y="230" width="29" height="56" rx="3" />
+                <rect x="128" y="228" width="29" height="58" rx="3" />
+                <path d="M137 237 H148" stroke="#d2b58b" stroke-width="2" />
+              </g>
+              <path d="M110 229 C91 236 92 261 113 280 Q132 298 147 283 Q153 272 135 260 Q126 252 122 242" fill="#495b62" />
+            </g>
+            <path d="M146 289 Q178 285 213 289 L210 313 Q181 335 150 314Z" fill="#e9aa94" />
+            <path d="M152 295 Q180 292 207 295" fill="none" stroke="#f7ceba" stroke-width="2" />
+
+          </g>
+        </g>
+      </svg>
+    </div>
+    <p class="caption">Lục túi → bối rối → tìm thấy phiếu.<br>Mẫu tự lặp để mình cùng xem chuyển động.</p>
+    <a href="./">Về trang sinh nhật</a>
+  </main>
+</body>
+</html>

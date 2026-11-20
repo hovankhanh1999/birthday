@@ -1,0 +1,139 @@
+<!doctype html>
+<html lang="vi">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="theme-color" content="#fff8ed">
+    <title>Oupsss !!!</title>
+    <link rel="preload" as="image" href="./assets/penguin-wave-connected.png">
+    <link rel="icon" href="./assets/heart-icon.svg" type="image/svg+xml">
+    <link rel="stylesheet" href="./styles.css?v=wider-oki">
+    <link rel="preload" as="image" href="./assets/penguin-pocket-clean.png">
+    <link rel="preload" as="image" href="./assets/penguin-approved-climb-transparent.png">
+    <link rel="stylesheet" href="./climb-preview.css?v=2">
+    <link rel="stylesheet" href="./pocket-preview.css?v=still-searching-4">
+    <link rel="stylesheet" href="./farewell.css?v=single-heart-lift">
+    <link rel="preload" as="image" href="./assets/penguin-farewell-front-v5.png">
+    <link rel="preload" as="image" href="./assets/penguin-farewell-continuous-v4.png">
+    <script src="./script.js?v=full-birthday-flow" defer></script>
+  </head>
+  <body data-stage="loading">
+    <main>
+      <section id="loading" class="loading-screen" aria-label="Đang tải">
+        <div class="spinner" aria-hidden="true"></div>
+        <p id="loading-text" role="status">Loading....</p>
+      </section>
+      <section id="password-entry" class="game-panel" hidden>
+        <div class="content">
+            <form id="password-form">
+              <label for="birthday">Cho xin mật khẩu rồi mới zô được nhe</label>
+              <div class="password-input">
+                <input id="birthday" name="birthday" type="password" placeholder="DDMMYYYY" inputmode="numeric" pattern="[0-9]{8}" minlength="8" maxlength="8" autocomplete="off" aria-describedby="password-error" required>
+              </div>
+              <p id="password-error" role="status" aria-live="polite"></p>
+              <button type="submit">Unlock</button>
+            </form>
+
+        </div>
+      </section>
+      <section id="penguin-scene" hidden aria-label="Cánh cụt đi tìm lời chúc">
+        <div class="climb-stage" data-phase="ready">
+          <p id="message" class="climb-bubble" role="status" aria-live="polite" hidden></p>
+          <div class="climb-actor" role="group" aria-label="Cánh cụt mặc yếm">
+            <svg class="idea-rays" viewBox="0 0 80 32" aria-hidden="true">
+              <path d="M40 21V5 M22 25 14 13 M58 25 66 13" />
+            </svg>
+            <div class="climb-frames"></div>
+            <div class="penguin-sprite wave-after-climb"></div>
+            <div class="pocket-frames" style="position: absolute; inset: 0"></div>
+            <div class="ticket-pull-frames"></div>
+
+          </div>
+          <div class="preview-wall" aria-hidden="true"></div>
+        </div>
+            <div id="ticket-options" hidden>
+          <div class="papers">
+            <button type="button" class="paper" data-paper="0" aria-label="Bốc phiếu thứ nhất"><span>?</span></button>
+            <button type="button" class="paper" data-paper="1" aria-label="Bốc phiếu thứ hai"><span>?</span></button>
+            <button type="button" class="paper" data-paper="2" aria-label="Bốc phiếu thứ ba"><span>?</span></button>
+          </div>
+            </div>
+        <div id="paper-game" class="ticket-draw" hidden>
+          <p id="game-title" tabindex="-1" aria-live="polite" hidden>Chị Nhi chọn quà điiii 😋</p>
+          <p id="paper-result" role="status" aria-live="polite"></p>
+          <button id="open-letter" type="button" hidden>Tuyệt zời....zô việc thoi... </button>
+        </div>
+      </section>
+      <section id="age-quiz" class="game-panel" aria-labelledby="quiz-label" hidden>
+        <p id="quiz-label" class="quiz-label">BÀI KIỂM TRA</p>
+        <div id="quiz-questions">
+          <p id="quiz-progress"></p>
+          <h2 id="quiz-title" tabindex="-1"></h2>
+          <div id="quiz-answers" class="quiz-answers"></div>
+          <button id="quiz-next" type="button" hidden>Câu tiếp theo</button>
+        </div>
+        <div id="quiz-result" hidden>
+          <h2 id="result-title" class="grading-title" tabindex="-1">Cánh cụt chấm bài</h2>
+          <p id="grading-dialogue" class="finale-line" role="status"></p>
+        </div>
+      </section>
+      <section id="birthday-guide" aria-labelledby="guide-line" data-phase="ready" hidden>
+        <div id="birthday-effects" aria-hidden="true" hidden></div>
+        <p id="guide-line" class="finale-line" role="status" tabindex="-1">Đưa tay đây, em dẫn chị đến chỗ nàyyy</p>
+        <div class="guide-track" aria-hidden="true"></div>
+        <div class="guide-pair">
+          <div class="finale-penguin guide-penguin" aria-hidden="true"></div>
+          <button id="take-hand" type="button" aria-label="Nhấn và giữ dấu vân tay">
+            <svg aria-hidden="true" width="30" height="30" viewBox="0 0 32 32" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round">
+              <path d="M5 15a11 11 0 0 1 22 0c0 3 .2 6 1 9M5 19c0 3-.5 5-1 6"/>
+              <path d="M8.5 15a7.5 7.5 0 0 1 15 0c0 5 .2 8.5 1.4 12M8.5 19c0 3-.5 6-1.4 8"/>
+              <path d="M10.7 28.5c1.1-3 1.3-7.5 1.3-13.5a4 4 0 0 1 8 0c0 2.7.1 5.1.4 7.2m.6 3.2.9 3.1"/>
+              <path d="M16 15c0 6-.1 10.2-1.6 14m4.1-2.3.6 2.5"/>
+            </svg>
+          </button>
+        </div>
+        <div class="cake-stand" aria-hidden="true">
+          <div id="cake" class="birthday-cake" aria-hidden="true">
+            <span class="cake-flame"></span>
+            <span class="cake-smoke"></span><span class="cake-candle"></span>
+            <span class="cake-tier"></span><span class="cake-plate"></span>
+          </div>
+        </div>
+        <p class="guide-hint">Nhấn giữ dấu vân tay nha</p>
+        <section id="birthday-party" aria-labelledby="party-title" hidden>
+          <h1 id="party-title" tabindex="-1" aria-live="polite">Chúc mừng sinh nhật chị Nhiiiii</h1>
+          <button id="birthday-continue" type="button" hidden>Chạm màn hình để tiếp tục</button>
+          <div class="party-actions">
+            <p id="candle-message" class="finale-line" role="status"></p>
+            <button id="wish-done" type="button" hidden>Xong rùiii</button>
+          </div>
+        </section>
+      </section>
+      <section id="bedtime" aria-labelledby="bedtime-line" hidden>
+        <p id="bedtime-line">xong rồi...chuẩn bị đi ngủ thoiii</p>
+        <button id="bedtime-continue" type="button">oki</button>
+      </section>
+      <section id="birthday-farewell" aria-labelledby="farewell-line" hidden>
+        <p id="farewell-line" class="finale-line" role="status" tabindex="-1">Từ từ từ từ đã</p>
+        <div class="farewell-stage" aria-hidden="true">
+          <div class="farewell-peek-window">
+            <div class="farewell-penguin">
+              <div class="farewell-character">
+                <span class="farewell-press-frame"></span>
+                <span class="farewell-eyes"></span>
+              </div>
+            </div>
+          </div>
+          <div class="sticker-carrier">
+            <div class="sticker-delivery">
+              <svg class="heart-sticker" viewBox="20 40 230 212"><path class="big-heart" d="M135 247C98 215 20 158 24 99 28 34 100 28 135 80c35-52 107-46 111 19 4 59-74 116-111 148Z"/></svg>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <noscript>Bật JavaScript để bé cánh cụt mang lời chúc đến nhé.</noscript>
+    </main>
+  </body>
+</html>
+
