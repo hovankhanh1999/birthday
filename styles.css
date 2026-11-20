@@ -471,7 +471,7 @@ body[data-stage="grading"] main { width: min(100% - 32px, 520px); }
 #birthday-guide:is([data-phase="blackout"], [data-phase="arrived"]) {
   color: #fff2dc;
 }
-#birthday-guide[data-phase="blackout"] .guide-track { background: #080605; }
+#birthday-guide[data-phase="blackout"] .guide-track { background: #000; }
 #birthday-guide[data-phase="arrived"] .guide-track {
   background: radial-gradient(ellipse at center, #694532 0%, #221510 42%, #080605 72%);
 }

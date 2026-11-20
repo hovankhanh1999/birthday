@@ -155,7 +155,7 @@ test('27 answer combinations allow changing answers and reach the grading scene'
 });
 
 test('finale walks only while the hand is held, then counts down and reveals the letter and heart', async () => {
- const {node,timers,context,clock}=setup();
+ const {node,timers,context,clock,document}=setup();
  timers.length=0;
  const advance=async(ms)=>{
   const timer=timers.shift();
@@ -204,12 +204,14 @@ test('finale walks only while the hand is held, then counts down and reveals the
  assert.equal(node('#birthday-guide').dataset.phase,'release');
  await advance(420);
  assert.equal(node('#birthday-guide').dataset.phase,'blackout');
+ assert.equal(document.body.dataset.stage,'blackout');
  await advance(1250);
  assert.notEqual(node('#cake').dataset.phase,'lit');
  assert.equal(node('#party-title').textContent,vm.runInContext('birthdayMessages[0]',context));
  assert.equal(node('#birthday-party').hidden,false);
  assert.equal(node('#birthday-guide').hidden,false);
  assert.equal(node('#birthday-guide').dataset.phase,'arrived');
+ assert.equal(document.body.dataset.stage,'party');
  assert.equal(node('#wish-done').hidden,true);
  await advance(1600);
  assert.equal(node('#birthday-continue').hidden,false);

@@ -316,6 +316,7 @@ function arriveAtCake() {
 async function revealCake() {
   await pause(420);
   guide.dataset.phase = 'blackout';
+  document.body.dataset.stage = 'blackout';
   await pause(1250);
   guide.dataset.phase = 'arrived';
   guide.classList.add('message-only');
