@@ -1,0 +1,39 @@
+name: Deploy to Cloudflare Pages
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: cloudflare-pages-production
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 24
+      - name: Test site
+        run: node --test tests/*.test.cjs
+      - name: Prepare site files
+        run: |
+          files=(index.html script.js styles.css climb-preview.css pocket-preview.css farewell.css)
+          mkdir -p dist/assets
+          cp "${files[@]}" dist/
+          grep -hoE 'assets/[[:alnum:]_.-]+' "${files[@]}" | sort -u | xargs -r cp -t dist/assets --
+      - name: Publish production site
+        env:
+          CLOUDFLARE_ACCOUNT_ID: 85b62820180ea3217f12c314b89cab34
+          CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+        run: |
+          if [ -z "$CLOUDFLARE_API_TOKEN" ]; then
+            echo "::error::Add the CLOUDFLARE_API_TOKEN repository secret before deploying."
+            exit 1
+          fi
+          npx --yes wrangler@4.165.0 pages deploy dist --project-name=oupsss-birthday --branch=main
