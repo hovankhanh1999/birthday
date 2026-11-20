@@ -36,4 +36,4 @@ jobs:
             echo "::error::Add the CLOUDFLARE_API_TOKEN repository secret before deploying."
             exit 1
           fi
-          npx --yes wrangler@4.165.0 pages deploy dist --project-name=oupsss-birthday --branch=main
+          npx --yes wrangler@4.165.0 pages deploy dist --project-name=fromkhanhwithlove --branch=main

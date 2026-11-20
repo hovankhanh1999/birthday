@@ -33,7 +33,7 @@ Bài kiểm tra dùng Node có sẵn, không cần cài thư viện. Kiểm tra 
 
 ## Deploy
 
-Đưa thư mục chứa index.html lên hosting tĩnh. Không có build command. Giữ nguyên cấu trúc assets và đường dẫn tương đối. HTML có phiên bản query cho CSS/JS; đổi phiên bản khi cập nhật để tránh cache bản cũ. Chưa deploy công khai.
+Trang chạy tại https://fromkhanhwithlove.pages.dev/. Workflow GitHub Actions deploy nhánh `main` lên project Cloudflare Pages `fromkhanhwithlove` và dùng secret `CLOUDFLARE_API_TOKEN`. Trang không cần build. HTML dùng phiên bản query cho CSS/JS để tránh cache bản cũ khi cập nhật.
 
 Mật khẩu là cổng trò chơi frontend, không phải bảo mật. Nội dung và mật khẩu có thể xem trong mã trang. Không thu thập hoặc lưu dữ liệu người chơi.
 
